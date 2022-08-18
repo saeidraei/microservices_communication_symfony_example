@@ -1,0 +1,101 @@
+version: '3'
+services:
+  api_gateway_app:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    container_name: api_gateway_app
+    volumes:
+      - ./api-gateway:/var/www/html/
+      - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+      - ./docker/php/www.conf:/usr/local/etc/php-fpm.d/www.conf
+  api_gateway_web:
+    image: nginx:alpine
+    container_name: api_gateway_web
+    working_dir: /var/www/html/
+    depends_on:
+      - api_gateway_app
+    ports:
+      - 8062:80
+    volumes:
+      - ./api-gateway:/var/www/html/
+      - ./docker/nginx/dev/conf.d/api_gateway.conf:/etc/nginx/conf.d/default.conf
+  post_app:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    container_name: post_app
+    depends_on:
+      - post_db
+    volumes:
+      - ./services/post:/var/www/html/
+      - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+      - ./docker/php/www.conf:/usr/local/etc/php-fpm.d/www.conf
+  post_web:
+    image: nginx:alpine
+    container_name: post_web
+    working_dir: /var/www/html/
+    depends_on:
+      - post_app
+    ports:
+      - 8060:80
+    volumes:
+      - ./services/post:/var/www/html/
+      - ./docker/nginx/dev/conf.d/post.conf:/etc/nginx/conf.d/default.conf
+  post_db:
+    image: mysql:8.0.30
+    container_name: post_db
+    environment:
+      MYSQL_ROOT_PASSWORD: localpassword
+      MYSQL_DATABASE: post
+    volumes:
+      - dbdata1:/var/lib/mysql
+  comment_app:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    container_name: comment_app
+    depends_on:
+      - comment_db
+    volumes:
+      - ./services/comment:/var/www/html/
+      - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+      - ./docker/php/www.conf:/usr/local/etc/php-fpm.d/www.conf
+  comment_web:
+    image: nginx:alpine
+    container_name: comment_web
+    working_dir: /var/www/html/
+    depends_on:
+      - comment_app
+    ports:
+      - 8061:80
+    volumes:
+      - ./services/comment:/var/www/html/
+      - ./docker/nginx/dev/conf.d/comment.conf:/etc/nginx/conf.d/default.conf
+  comment_db:
+    image: mysql:8.0.30
+    container_name: comment_db
+    environment:
+      MYSQL_ROOT_PASSWORD: localpassword
+      MYSQL_DATABASE: comment
+    volumes:
+      - dbdata2:/var/lib/mysql
+  rabbit:
+    image: "rabbitmq:3-management"
+    hostname: "rabbit1"
+    environment:
+      RABBITMQ_ERLANG_COOKIE: "SWQOKODSQALRPCLNMEQG"
+      RABBITMQ_DEFAULT_USER: "rabbitmq"
+      RABBITMQ_DEFAULT_PASS: "rabbitmq"
+      RABBITMQ_DEFAULT_VHOST: "/"
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    labels:
+      NAME: "rabbitmq1"
+# Volumes
+volumes:
+  dbdata1:
+    driver: local
+  dbdata2:
+    driver: local
