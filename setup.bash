@@ -14,3 +14,6 @@ sudo docker exec api_gateway_app composer install
 
 sudo docker exec post_app php bin/console --no-interaction doctrine:migrations:migrate
 sudo docker exec comment_app php bin/console --no-interaction doctrine:migrations:migrate
+
+sudo docker exec rabbit rabbitmqadmin declare exchange name=some_exchange type=direct
+

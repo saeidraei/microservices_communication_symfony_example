@@ -31,6 +31,16 @@ services:
       - ./services/post:/var/www/html/
       - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
       - ./docker/php/www.conf:/usr/local/etc/php-fpm.d/www.conf
+  post_consumer:
+    build:
+      context: .
+      dockerfile: docker/php-consumer/Dockerfile
+    container_name: post_consumer
+    depends_on:
+      - post_db
+    volumes:
+      - ./services/post:/var/www/html/
+      - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
   post_web:
     image: nginx:alpine
     container_name: post_web
@@ -82,7 +92,7 @@ services:
       - dbdata2:/var/lib/mysql
   rabbit:
     image: "rabbitmq:3-management"
-    hostname: "rabbit1"
+    container_name: "rabbit"
     environment:
       RABBITMQ_ERLANG_COOKIE: "SWQOKODSQALRPCLNMEQG"
       RABBITMQ_DEFAULT_USER: "rabbitmq"
@@ -91,8 +101,6 @@ services:
     ports:
       - "15672:15672"
       - "5672:5672"
-    labels:
-      NAME: "rabbitmq1"
 # Volumes
 volumes:
   dbdata1:
