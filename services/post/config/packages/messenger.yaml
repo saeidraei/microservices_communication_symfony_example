@@ -15,8 +15,13 @@ framework:
             post_created:
                 dsn: "%env(MESSENGER_POST_CREATED_DSN)%"
                 serializer: messenger.transport.symfony_serializer
+                options:
+                    queues: []
             post_queue:
                 dsn: "%env(MESSENGER_POST_QUEUE_DSN)%"
+                serializer: messenger.transport.symfony_serializer
+            post_deleted:
+                dsn: "%env(MESSENGER_POST_DELETED_DSN)%"
                 serializer: messenger.transport.symfony_serializer
 
         routing:
