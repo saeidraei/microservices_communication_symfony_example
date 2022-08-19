@@ -21,6 +21,11 @@ class StoreUseCaseTest extends TestCase
         $post = new Post();
         $post->setTitle('new test title');
         $post->setBody('new test body');
+        //this simulates the queue by calling this callback
+        $messenger->assertCallback = function ($message){
+            $this->assertEquals('new test title',$message->getPost()->getTitle());
+            $this->assertEquals('new test body',$message->getPost()->getBody());
+        };
         $indexUseCase->execute($post);
 
         $fetchedPost = $postRepository->findOneById($post->getId());
