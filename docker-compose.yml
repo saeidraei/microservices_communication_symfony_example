@@ -72,6 +72,17 @@ services:
       - ./services/comment:/var/www/html/
       - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
       - ./docker/php/www.conf:/usr/local/etc/php-fpm.d/www.conf
+  comment_consumer:
+    build:
+      context: .
+      dockerfile: docker/php-consumer/Dockerfile
+    container_name: comment_consumer
+    depends_on:
+      - rabbit
+      - comment_db
+    volumes:
+      - ./services/comment:/var/www/html/
+      - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
   comment_web:
     image: nginx:alpine
     container_name: comment_web
