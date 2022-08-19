@@ -37,6 +37,7 @@ services:
       dockerfile: docker/php-consumer/Dockerfile
     container_name: post_consumer
     depends_on:
+      - rabbit
       - post_db
     volumes:
       - ./services/post:/var/www/html/
