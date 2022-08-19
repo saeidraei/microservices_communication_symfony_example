@@ -6,7 +6,7 @@ here's our orchestration of the components:
 ![microservices base](./docs/microservices-base.png)
 
 
-lets explore this 2 scenarios:
+Let's explore this 2 scenarios:
 
 1. get a singular post with its comments (read request)
 2. submit a post (write request)
@@ -27,6 +27,7 @@ performance purposes, Now lets get into the steps in this case:
 
 ## 2. Submit a post (write request)
 ![microservices read](./docs/micro-write.png)
+
 Here we are gonna demonstrate how services can communicate through Pub\Sub style queue, then for sake of example we made
 two imaginary tasks on the Post and Comment services, in the Post Service we are gonna pretend to mine a text to store 
 on each model and on the Comment service we are gonna create a comment for that post that keeps the original Post content, 
@@ -40,6 +41,7 @@ rest of the steps are pretty much straightforward REST implementation.
 
 ###### The RabbitMQ part
 ![microservices queue](./docs/queue.png)
+
 So here we can see the details inside the RabbitMQ, in the step 4 of the write request we sent a PostCreated event to 
 the RabbitMQ let's continue form there, in order to receive that message on multiple ends we can use a fan-out exchange
 instead of a normal queue on the sender's end, the symfony messenger is not aware of this and thinks of it as a normal 
