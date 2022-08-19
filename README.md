@@ -13,6 +13,7 @@ Let's explore this 2 scenarios:
 
 ## 1. Get a singular post with its comments (read request)
 ![microservices read](./docs/micro-read.png)
+
 Read requests are pretty much straightforward we query any services that are needed and return the merged response, 
 just note that these sequences doesn't need to be exactly in this order, for example requests can be made concurrently for 
 performance purposes, Now lets get into the steps in this case:
