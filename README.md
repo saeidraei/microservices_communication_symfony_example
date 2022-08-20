@@ -28,8 +28,8 @@ Read requests are pretty much straightforward we query any services that are nee
 just note that these sequences doesn't need to be exactly in this order, for example requests can be made concurrently for 
 performance purposes, Now lets get into the steps in this case:
 1. The client sends an HTTP GET request to the API Gateway
-2. The API Gateway sends a GET request to the Post service 
-3. the post service queries its own database and gets the record
+2. The API Gateway sends a GET request to the Post Service 
+3. the Post Service queries its own database and gets the record
 4. the Post Service returns the Post data as response to the Api Gateway
 5. the Api Gateway sends a get request to the Comment Service to get the commends of that post
 6. the Comment Service queries its own database to get the comments related to that post
@@ -49,9 +49,9 @@ And here's the response:
 ## 2. Submit a post (write request)
 ![microservices read](./docs/micro-write.png)
 
-Here we are gonna demonstrate how services can communicate through Pub\Sub style queue, then for sake of example we made
-two imaginary tasks on the Post and Comment services, in the Post Service we are gonna pretend to mine a text to store 
-on each model and on the Comment service we are gonna create a comment for that post that keeps the original Post content, 
+Here we are gonna demonstrate how services can communicate through Pub\Sub style messaging, then for sake of example we made
+two imaginary tasks on the Post and Comment Services, in the Post Service we are gonna pretend to mine a text to store 
+on each model and on the Comment Service we are gonna create a comment for that post that keeps the original Post content, 
 rest of the steps are pretty much straightforward REST implementation.
 1. the client sends an HTTP POST request to the API Gateway 
 2. the Api Gateway sends a POST request to the Post Service
@@ -63,11 +63,11 @@ rest of the steps are pretty much straightforward REST implementation.
 ###### The RabbitMQ part
 ![microservices queue](./docs/queue.png)
 
-So here we can see the details inside the RabbitMQ, in the step 4 of the write request we sent a PostCreated event to 
+So here we can see the details inside the RabbitMQ component, in the step 4 of the write request, we sent a PostCreated event to 
 the RabbitMQ let's continue form there, in order to receive that message on multiple ends we can use a fan-out exchange
 instead of a normal queue on the sender's end, the symfony messenger is not aware of this and thinks of it as a normal 
-queue and we are gonna consume the messages from another queue that gets the message after the fanout stage. so when the
-exchange receives a message duplicates it to any queues that we have specified and multiple services consumes the same 
+queue, and we are gonna consume the messages from a queue that gets the message after the fanout stage. so when the
+exchange receives a message duplicates it to any queues that we have specified (with bindings) and multiple services consumes the same 
 messages. after that as we discussed before inside the Post Service the event handler updates the post with an imaginary
 mined text and in the Comment Service we create a copy of the Post by inserting a comment for that post.
 
