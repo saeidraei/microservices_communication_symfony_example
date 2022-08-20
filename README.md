@@ -5,6 +5,9 @@
 2. run `docker-compose up -d`
 3. run `bash setup.bash` and there you go you have the whole thing up and running.
 
+You can checkout the [postman documentation](https://documenter.getpostman.com/view/3134274/VUqoSKUC#37ef1a79-43ee-4abf-9b4b-32c16b91fa4c).
+also note that the symfony projects follow the structure proposed in ["How to apply Hexagonal/Clean/Onion architecture in symfony"](https://saeidme.medium.com/how-to-apply-hexagonal-clean-onion-architecture-with-only-two-changes-to-your-symfony-project-2c5fe16d5a4f) article.
+
 
 ## System Design
 Here's our orchestration of the components:
