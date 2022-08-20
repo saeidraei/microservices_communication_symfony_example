@@ -1,12 +1,19 @@
 # Microservices Architecture example using symfony
 
-here's our orchestration of the components:
+## How to run the project using docker-compose
+1. clone this repository and cd into it.
+2. run `docker-compose up -d`
+3. run `bash setup.bash` and there you go you have the whole thing up and running.
+
+
+## System Design
+Here's our orchestration of the components:
 
 
 ![microservices base](./docs/microservices-base.png)
 
 
-Let's explore this 2 scenarios:
+We are going to explore these two example scenarios (read and write):
 
 1. get a singular post with its comments (read request)
 2. submit a post (write request)
