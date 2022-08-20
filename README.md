@@ -36,6 +36,16 @@ performance purposes, Now lets get into the steps in this case:
 7. the Comment Service returns the response to the Api Gateway
 8. the Api Gateway merges the responses of those two services and returns it as the final singular response to the client.
 
+
+Here's the example request:
+
+![read request](./docs/read-request.png)
+
+And here's the response:
+
+![read request](./docs/read-response.png)
+
+
 ## 2. Submit a post (write request)
 ![microservices read](./docs/micro-write.png)
 
@@ -60,3 +70,13 @@ queue and we are gonna consume the messages from another queue that gets the mes
 exchange receives a message duplicates it to any queues that we have specified and multiple services consumes the same 
 messages. after that as we discussed before inside the Post Service the event handler updates the post with an imaginary
 mined text and in the Comment Service we create a copy of the Post by inserting a comment for that post.
+
+
+Here's the example request:
+
+![write request](./docs/write-request.png)
+
+And here's the response:
+
+![write request](./docs/write-response.png)
+
